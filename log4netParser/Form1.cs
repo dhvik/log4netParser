@@ -101,9 +101,19 @@ namespace log4netParser {
 
 		private void closeTabButton_Click(object sender, EventArgs e) {
 			//cannot close main tabs
-			if (tabControl1.SelectedTab == tabPage1 || tabControl1.SelectedTab == tabPage2)
+			var tabToClose = tabControl1.SelectedTab;
+			if (tabToClose == tabPage1 || tabToClose == tabPage2)
 				return;
-			tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+			tabControl1.SuspendLayout();
+			var selectedIndex = tabControl1.SelectedIndex;
+			if (selectedIndex == (tabControl1.TabCount - 1)) {
+				selectedIndex--;
+			} else {
+				selectedIndex++;
+			}
+			tabControl1.SelectedIndex = selectedIndex;
+			tabControl1.TabPages.Remove(tabToClose);
+			tabControl1.ResumeLayout();
 		}
 	}
 }
