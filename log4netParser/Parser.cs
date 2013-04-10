@@ -40,7 +40,7 @@ namespace log4netParser {
 				_current = entry;
 				LogData.Entries.Add(entry);
 			} else {
-				_current.Message += line;
+				_current.Message += Environment.NewLine+line;
 			}
 			//2013-04-09 00:57:29,648 ERROR [57] EPiServer.Global.Global_Error - 1.2.5 Unhandled exception in ASP.NET
 			//System.Web.HttpException (0x80004005): A potentially dangerous Request.Path value was detected from the client (?).

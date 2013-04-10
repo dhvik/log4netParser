@@ -24,7 +24,13 @@
 		/// </summary>
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.searchButton = new System.Windows.Forms.Button();
+			this.searchTextBox = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.closeTabButton = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.textBox1 = new System.Windows.Forms.TextBox();
@@ -32,33 +38,31 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.dataGridView2 = new System.Windows.Forms.DataGridView();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			this.Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.splitter1 = new System.Windows.Forms.Splitter();
-			this.closeTabButton = new System.Windows.Forms.Button();
 			this.levelDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.noOfEntiresDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-			this.timeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.levelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.threadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.loggerDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+			this.panel3 = new System.Windows.Forms.Panel();
+			this.label3 = new System.Windows.Forms.Label();
+			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.logEntryView1 = new log4netParser.LogEntryView();
+			this.splitter1 = new System.Windows.Forms.Splitter();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-			this.tabPage1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+			this.panel3.SuspendLayout();
+			this.tabPage1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.searchButton);
+			this.panel1.Controls.Add(this.searchTextBox);
+			this.panel1.Controls.Add(this.label2);
 			this.panel1.Controls.Add(this.closeTabButton);
 			this.panel1.Controls.Add(this.button1);
 			this.panel1.Controls.Add(this.label1);
@@ -69,6 +73,46 @@
 			this.panel1.Size = new System.Drawing.Size(948, 42);
 			this.panel1.TabIndex = 0;
 			// 
+			// searchButton
+			// 
+			this.searchButton.Location = new System.Drawing.Point(651, 11);
+			this.searchButton.Name = "searchButton";
+			this.searchButton.Size = new System.Drawing.Size(75, 23);
+			this.searchButton.TabIndex = 6;
+			this.searchButton.Text = "Search";
+			this.toolTip1.SetToolTip(this.searchButton, "Click to perform filtering on message.");
+			this.searchButton.UseVisualStyleBackColor = true;
+			this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+			// 
+			// searchTextBox
+			// 
+			this.searchTextBox.Location = new System.Drawing.Point(457, 13);
+			this.searchTextBox.Name = "searchTextBox";
+			this.searchTextBox.Size = new System.Drawing.Size(188, 20);
+			this.searchTextBox.TabIndex = 5;
+			this.toolTip1.SetToolTip(this.searchTextBox, "Enter a search term to filter on the message column. Clear to match all.");
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(410, 16);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(41, 13);
+			this.label2.TabIndex = 4;
+			this.label2.Text = "Search";
+			// 
+			// closeTabButton
+			// 
+			this.closeTabButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.closeTabButton.Location = new System.Drawing.Point(930, 22);
+			this.closeTabButton.Name = "closeTabButton";
+			this.closeTabButton.Size = new System.Drawing.Size(18, 20);
+			this.closeTabButton.TabIndex = 3;
+			this.closeTabButton.Text = "x";
+			this.toolTip1.SetToolTip(this.closeTabButton, "Click to close the tab (cannot close Group by logger and All entries tabs)");
+			this.closeTabButton.UseVisualStyleBackColor = true;
+			this.closeTabButton.Click += new System.EventHandler(this.closeTabButton_Click);
+			// 
 			// button1
 			// 
 			this.button1.Location = new System.Drawing.Point(328, 11);
@@ -76,6 +120,7 @@
 			this.button1.Size = new System.Drawing.Size(75, 23);
 			this.button1.TabIndex = 2;
 			this.button1.Text = "Parse";
+			this.toolTip1.SetToolTip(this.button1, "Click to parse the selected logfile");
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
@@ -94,7 +139,7 @@
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size(268, 20);
 			this.textBox1.TabIndex = 0;
-			this.textBox1.Text = "C:\\temp\\sca\\logs\\PD1\\episerver\\error.log";
+			this.toolTip1.SetToolTip(this.textBox1, "Enter the filename of a log4net file to parse");
 			// 
 			// panel2
 			// 
@@ -119,6 +164,7 @@
 			// tabPage2
 			// 
 			this.tabPage2.Controls.Add(this.dataGridView2);
+			this.tabPage2.Controls.Add(this.panel3);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -131,6 +177,7 @@
 			// 
 			this.dataGridView2.AllowUserToAddRows = false;
 			this.dataGridView2.AllowUserToDeleteRows = false;
+			this.dataGridView2.AllowUserToResizeRows = false;
 			this.dataGridView2.AutoGenerateColumns = false;
 			this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -143,69 +190,10 @@
 			this.dataGridView2.Name = "dataGridView2";
 			this.dataGridView2.ReadOnly = true;
 			this.dataGridView2.RowHeadersVisible = false;
-			this.dataGridView2.Size = new System.Drawing.Size(934, 521);
+			this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.dataGridView2.Size = new System.Drawing.Size(934, 501);
 			this.dataGridView2.TabIndex = 0;
 			this.dataGridView2.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentDoubleClick);
-			// 
-			// tabPage1
-			// 
-			this.tabPage1.Controls.Add(this.dataGridView1);
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(940, 499);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "All entries";
-			this.tabPage1.UseVisualStyleBackColor = true;
-			// 
-			// dataGridView1
-			// 
-			this.dataGridView1.AllowUserToAddRows = false;
-			this.dataGridView1.AllowUserToDeleteRows = false;
-			this.dataGridView1.AutoGenerateColumns = false;
-			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.timeDataGridViewTextBoxColumn,
-            this.levelDataGridViewTextBoxColumn,
-            this.threadDataGridViewTextBoxColumn,
-            this.loggerDataGridViewTextBoxColumn,
-            this.Message});
-			this.dataGridView1.DataSource = this.bindingSource1;
-			this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dataGridView1.Location = new System.Drawing.Point(3, 3);
-			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.ReadOnly = true;
-			this.dataGridView1.RowHeadersVisible = false;
-			this.dataGridView1.Size = new System.Drawing.Size(934, 493);
-			this.dataGridView1.TabIndex = 0;
-			// 
-			// Message
-			// 
-			this.Message.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.Message.DataPropertyName = "Message";
-			this.Message.HeaderText = "Message";
-			this.Message.Name = "Message";
-			this.Message.ReadOnly = true;
-			// 
-			// splitter1
-			// 
-			this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.splitter1.Location = new System.Drawing.Point(0, 42);
-			this.splitter1.Name = "splitter1";
-			this.splitter1.Size = new System.Drawing.Size(948, 3);
-			this.splitter1.TabIndex = 2;
-			this.splitter1.TabStop = false;
-			// 
-			// closeTabButton
-			// 
-			this.closeTabButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.closeTabButton.Location = new System.Drawing.Point(930, 22);
-			this.closeTabButton.Name = "closeTabButton";
-			this.closeTabButton.Size = new System.Drawing.Size(18, 20);
-			this.closeTabButton.TabIndex = 3;
-			this.closeTabButton.Text = "x";
-			this.closeTabButton.UseVisualStyleBackColor = true;
-			this.closeTabButton.Click += new System.EventHandler(this.closeTabButton_Click);
 			// 
 			// levelDataGridViewTextBoxColumn1
 			// 
@@ -217,6 +205,8 @@
 			// noOfEntiresDataGridViewTextBoxColumn
 			// 
 			this.noOfEntiresDataGridViewTextBoxColumn.DataPropertyName = "NoOfEntires";
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			this.noOfEntiresDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
 			this.noOfEntiresDataGridViewTextBoxColumn.HeaderText = "NoOfEntires";
 			this.noOfEntiresDataGridViewTextBoxColumn.Name = "noOfEntiresDataGridViewTextBoxColumn";
 			this.noOfEntiresDataGridViewTextBoxColumn.ReadOnly = true;
@@ -234,61 +224,75 @@
 			// 
 			this.bindingSource2.DataSource = typeof(log4netParser.Logger);
 			// 
-			// timeDataGridViewTextBoxColumn
+			// panel3
 			// 
-			this.timeDataGridViewTextBoxColumn.DataPropertyName = "Time";
-			this.timeDataGridViewTextBoxColumn.HeaderText = "Time";
-			this.timeDataGridViewTextBoxColumn.Name = "timeDataGridViewTextBoxColumn";
-			this.timeDataGridViewTextBoxColumn.ReadOnly = true;
+			this.panel3.Controls.Add(this.label3);
+			this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.panel3.Location = new System.Drawing.Point(3, 504);
+			this.panel3.Name = "panel3";
+			this.panel3.Size = new System.Drawing.Size(934, 20);
+			this.panel3.TabIndex = 1;
 			// 
-			// levelDataGridViewTextBoxColumn
+			// label3
 			// 
-			this.levelDataGridViewTextBoxColumn.DataPropertyName = "Level";
-			this.levelDataGridViewTextBoxColumn.HeaderText = "Level";
-			this.levelDataGridViewTextBoxColumn.Name = "levelDataGridViewTextBoxColumn";
-			this.levelDataGridViewTextBoxColumn.ReadOnly = true;
-			this.levelDataGridViewTextBoxColumn.Width = 50;
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(3, 3);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(269, 13);
+			this.label3.TabIndex = 0;
+			this.label3.Text = "Doubleclick on a row to open the entries for that logger.";
 			// 
-			// threadDataGridViewTextBoxColumn
+			// tabPage1
 			// 
-			this.threadDataGridViewTextBoxColumn.DataPropertyName = "Thread";
-			this.threadDataGridViewTextBoxColumn.HeaderText = "Thread";
-			this.threadDataGridViewTextBoxColumn.Name = "threadDataGridViewTextBoxColumn";
-			this.threadDataGridViewTextBoxColumn.ReadOnly = true;
-			this.threadDataGridViewTextBoxColumn.Width = 40;
+			this.tabPage1.Controls.Add(this.logEntryView1);
+			this.tabPage1.Location = new System.Drawing.Point(4, 22);
+			this.tabPage1.Name = "tabPage1";
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage1.Size = new System.Drawing.Size(940, 527);
+			this.tabPage1.TabIndex = 0;
+			this.tabPage1.Text = "All entries";
+			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// loggerDataGridViewTextBoxColumn
+			// logEntryView1
 			// 
-			this.loggerDataGridViewTextBoxColumn.DataPropertyName = "Logger";
-			this.loggerDataGridViewTextBoxColumn.HeaderText = "Logger";
-			this.loggerDataGridViewTextBoxColumn.Name = "loggerDataGridViewTextBoxColumn";
-			this.loggerDataGridViewTextBoxColumn.ReadOnly = true;
-			this.loggerDataGridViewTextBoxColumn.Width = 250;
+			this.logEntryView1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.logEntryView1.Location = new System.Drawing.Point(3, 3);
+			this.logEntryView1.LogEntires = null;
+			this.logEntryView1.Name = "logEntryView1";
+			this.logEntryView1.Size = new System.Drawing.Size(934, 521);
+			this.logEntryView1.TabIndex = 0;
 			// 
-			// bindingSource1
+			// splitter1
 			// 
-			this.bindingSource1.DataSource = typeof(log4netParser.LogEntry);
+			this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.splitter1.Location = new System.Drawing.Point(0, 42);
+			this.splitter1.Name = "splitter1";
+			this.splitter1.Size = new System.Drawing.Size(948, 3);
+			this.splitter1.TabIndex = 2;
+			this.splitter1.TabStop = false;
 			// 
 			// Form1
 			// 
+			this.AcceptButton = this.searchButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(948, 598);
 			this.Controls.Add(this.panel2);
 			this.Controls.Add(this.splitter1);
 			this.Controls.Add(this.panel1);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Form1";
-			this.Text = "Form1";
+			this.Text = "log4net log parser";
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			this.panel2.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-			this.tabPage1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
+			this.panel3.ResumeLayout(false);
+			this.panel3.PerformLayout();
+			this.tabPage1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -300,23 +304,23 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.DataGridView dataGridView1;
-		private System.Windows.Forms.BindingSource bindingSource1;
-		private System.Windows.Forms.DataGridViewTextBoxColumn timeDataGridViewTextBoxColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn levelDataGridViewTextBoxColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn threadDataGridViewTextBoxColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn loggerDataGridViewTextBoxColumn;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Message;
 		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.TabControl tabControl1;
-		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.DataGridView dataGridView2;
 		private System.Windows.Forms.BindingSource bindingSource2;
+		private System.Windows.Forms.Button closeTabButton;
+		private System.Windows.Forms.Button searchButton;
+		private System.Windows.Forms.TextBox searchTextBox;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.TabPage tabPage1;
+		private LogEntryView logEntryView1;
+		private System.Windows.Forms.Panel panel3;
+		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.DataGridViewTextBoxColumn levelDataGridViewTextBoxColumn1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn noOfEntiresDataGridViewTextBoxColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
-		private System.Windows.Forms.Button closeTabButton;
+		private System.Windows.Forms.ToolTip toolTip1;
 	}
 }
 

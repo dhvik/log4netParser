@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace log4netParser {
-	internal class LogEntry {
+	public class LogEntry {
 		/* *******************************************************************
 		 *  Properties
 		 * *******************************************************************/
