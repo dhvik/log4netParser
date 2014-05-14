@@ -61,7 +61,7 @@ namespace log4netParser {
 \s
 \d{2}:\d{2}:\d{2},\d{3})\s+
 (?<level>\w+)\s+
-\[(?<thread>\d+)\]\s+
+\[(?<thread>\d+)\]\s*
 (?<logger>\S+)\s+
 (?<whut>\S+)\s+
 (?<message>.*)$
