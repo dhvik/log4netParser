@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace log4netParser {
@@ -20,7 +21,7 @@ namespace log4netParser {
 			set {
 				if (_logEntires != value) {
 					_logEntires = value;
-					bindingSource1.DataSource = _logEntires;
+					bindingSource1.DataSource = new SortableSearchableList<LogEntry>( _logEntires);
 				}
 			}
 		}
@@ -46,7 +47,7 @@ namespace log4netParser {
 		/// </summary>
 		/// <param name="sender">The <see cref="object"/> that fired the event.</param>
 		/// <param name="e">The <see cref="System.EventArgs"/> of the event.</param>
-		private void dataGridView1_SelectionChanged(object sender, System.EventArgs e) {
+		private void dataGridView1_SelectionChanged(object sender, EventArgs e) {
 			richTextBox1.SuspendLayout();
 			richTextBox1.Text = "";
 			if (dataGridView1.SelectedRows.Count > 0) {
