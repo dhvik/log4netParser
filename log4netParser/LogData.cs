@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace log4netParser {
-	internal class LogData {
+    public class LogData {
 		/* *******************************************************************
 		 *  Properties
 		 * *******************************************************************/

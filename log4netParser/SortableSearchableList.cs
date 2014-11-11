@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace log4netParser {
@@ -64,6 +65,7 @@ namespace log4netParser {
         bool _isSortedValue;
         #endregion
         private ArrayList _unsortedItems;
+        private List<T> _hiddenItems;
         /* *******************************************************************
          *  Methods
          * *******************************************************************/
@@ -230,7 +232,39 @@ namespace log4netParser {
             base.EndNew(itemIndex);
         }
         #endregion
-     
+
+        public int Hide(Func<T, bool> predicate) {
+            if (_hiddenItems == null) _hiddenItems = new List<T>();
+            this.RaiseListChangedEvents = false;
+            var removedItems = 0;
+            for (var i = Count - 1; i >= 0; i--) {
+                try {
+                    if (predicate(this[i])) {
+                        _hiddenItems.Add(this[i]);
+                        RemoveAt(i);
+                        removedItems++;
+                    }
+                } catch (Exception e) {
+                    Debug.WriteLine("Error in predicate function " + e.Message);
+                }
+            }
+            RaiseListChangedEvents = true;
+            if (removedItems > 0) {
+                OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
+            }
+            return removedItems;    
+        }
+
+        public void ShowHiddenItems() {
+            if (_hiddenItems == null || _hiddenItems.Count == 0) {
+                return;
+            }
+            foreach (var hiddenItem in _hiddenItems) {
+                Add(hiddenItem);
+            }
+            _hiddenItems = null;
+        }
+
         /* *******************************************************************
          *  Inner classes
          * *******************************************************************/
@@ -300,6 +334,7 @@ namespace log4netParser {
             }
             #endregion
         }
+
     }
-    
+
 }

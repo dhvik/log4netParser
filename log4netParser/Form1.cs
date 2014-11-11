@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using log4netParser.Controls;
 
 namespace log4netParser {
 	public partial class Form1 : Form {
@@ -16,6 +17,7 @@ namespace log4netParser {
 		public Form1() {
 			InitializeComponent();
 			textBox1.Text = Settings.Instance.LastLoadedFile;
+            loggerView1.AddLogger+=(sender, args) => AddLoggerTab(args.Logger);
 		}
 		#endregion
 		/* *******************************************************************
@@ -29,11 +31,20 @@ namespace log4netParser {
 		/// <param name="e">The <see cref="EventArgs"/> of the event.</param>
 		private void button1_Click(object sender, EventArgs e) {
 			var logData = ParseLogfile(textBox1.Text);
-			logEntryView1.LogEntires = logData.Entries;
-			bindingSource2.DataSource = logData.Loggers;
+            SetViewModel(logData);
 			_currentData = logData;
 		}
 		#endregion
+        #region private void SetViewModel(LogData logData)
+        /// <summary>
+        /// Sets the supplied logData as the current view model
+        /// </summary>
+        /// <param name="logData"></param>
+        private void SetViewModel(LogData logData) {
+            logEntryView1.LogData = logData;
+            loggerView1.LogData = logData;
+        }
+        #endregion
 		#region private LogData ParseLogfile(string filename)
 		/// <summary>
 		/// 
@@ -55,21 +66,6 @@ namespace log4netParser {
 			}
 			parser.LogData.Analyze();
 			return parser.LogData;
-		}
-		#endregion
-		#region private void dataGridView2_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-		/// <summary>
-		/// This method is called when the dataGridView2's CellContentDoubleClick event has been fired.
-		/// </summary>
-		/// <param name="sender">The <see cref="object"/> that fired the event.</param>
-		/// <param name="e">The <see cref="DataGridViewCellEventArgs"/> of the event.</param>
-		private void dataGridView2_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e) {
-			try {
-				var logger = dataGridView2.Rows[e.RowIndex].DataBoundItem as Logger;
-				AddLoggerTab(logger);
-			} catch (Exception exception) {
-				MessageBox.Show(exception.Message + Environment.NewLine + exception.StackTrace);
-			}
 		}
 		#endregion
 		#region private void AddLoggerTab(Logger logger)
@@ -130,8 +126,7 @@ namespace log4netParser {
 				currentSearchData.Analyze();
 				dataToDisplay = currentSearchData;
 			}
-			logEntryView1.LogEntires = dataToDisplay.Entries;
-			bindingSource2.DataSource = dataToDisplay.Loggers;
+            SetViewModel(dataToDisplay);
 		}
 		#endregion
 		#region private bool IsMatch(string searchString, string message)
@@ -150,6 +145,7 @@ namespace log4netParser {
 			return message.IndexOf(searchString, StringComparison.InvariantCultureIgnoreCase) >= 0;
 		}
 		#endregion
+
 
 	}
 }
