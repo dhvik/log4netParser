@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace log4netParser {
 	public class LogEntry {
@@ -10,7 +11,7 @@ namespace log4netParser {
 		/// Get/Sets the Message of the LogEntry
 		/// </summary>
 		/// <value></value>
-		public string Message { get; set; }
+        public LogMessage Message { get; set; }
 		#endregion
 		#region public DateTime Time
 		/// <summary>
@@ -53,4 +54,42 @@ namespace log4netParser {
 		}
 		#endregion
 	}
+    public class LogMessage:IComparable{
+        public string Message { get; set; }
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// A value that indicates the relative order of the objects being compared. 
+        /// The return value has the following meanings: 
+        /// Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.
+        /// Zero This object is equal to <paramref name="other"/>. 
+        /// Greater than zero This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public int CompareTo(object other) {
+            var logMessage = other as LogMessage;
+            if (logMessage == null) return 1;
+            if (logMessage.Message == null && Message == null) return 0;
+            if (logMessage.Message == null) return 1;
+            if (Message == null) return 0;
+            //if (DuoVia.FuzzyStrings.StringExtensions.FuzzyEquals(Message, logMessage.Message)) return 0;
+            return String.Compare(Message, logMessage.Message, StringComparison.Ordinal);
+        }
+
+        #region public LogMessage(string message)
+        /// <summary>
+        /// Initializes a new instance of the <b>LogMessage</b> class.
+        /// </summary>
+        /// <param name="message"></param>
+        public LogMessage(string message) {
+            Message = message;
+        }
+        #endregion
+        public override string ToString() {
+            return Message;
+        }
+
+    }
 }

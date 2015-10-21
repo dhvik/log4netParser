@@ -38,17 +38,17 @@ namespace log4netParser {
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.loggerView1 = new log4netParser.Controls.LoggerView();
+            this.mainLogTabPage = new System.Windows.Forms.TabPage();
+            this.mainLogEntryView = new log4netParser.Controls.LogEntryView();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.logEntryView1 = new LogEntryView();
-            this.loggerView1 = new log4netParser.Controls.LoggerView();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.mainLogTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -147,7 +147,7 @@ namespace log4netParser {
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.mainLogTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -166,16 +166,34 @@ namespace log4netParser {
             this.tabPage2.Text = "Group by logger";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // loggerView1
             // 
-            this.tabPage1.Controls.Add(this.logEntryView1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(940, 527);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "All entries";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.loggerView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.loggerView1.Location = new System.Drawing.Point(3, 3);
+            this.loggerView1.Name = "loggerView1";
+            this.loggerView1.Size = new System.Drawing.Size(934, 521);
+            this.loggerView1.TabIndex = 2;
+            // 
+            // mainLogTabPage
+            // 
+            this.mainLogTabPage.Controls.Add(this.mainLogEntryView);
+            this.mainLogTabPage.Location = new System.Drawing.Point(4, 22);
+            this.mainLogTabPage.Name = "mainLogTabPage";
+            this.mainLogTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.mainLogTabPage.Size = new System.Drawing.Size(940, 527);
+            this.mainLogTabPage.TabIndex = 0;
+            this.mainLogTabPage.Text = "All entries";
+            this.mainLogTabPage.UseVisualStyleBackColor = true;
+            // 
+            // mainLogEntryView
+            // 
+            this.mainLogEntryView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainLogEntryView.IsMainLog = true;
+            this.mainLogEntryView.Location = new System.Drawing.Point(3, 3);
+            this.mainLogEntryView.LogEntires = null;
+            this.mainLogEntryView.Name = "mainLogEntryView";
+            this.mainLogEntryView.Size = new System.Drawing.Size(934, 521);
+            this.mainLogEntryView.TabIndex = 0;
             // 
             // splitter1
             // 
@@ -189,23 +207,6 @@ namespace log4netParser {
             // bindingSource2
             // 
             this.bindingSource2.DataSource = typeof(log4netParser.Logger);
-            // 
-            // logEntryView1
-            // 
-            this.logEntryView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logEntryView1.Location = new System.Drawing.Point(3, 3);
-            this.logEntryView1.LogEntires = null;
-            this.logEntryView1.Name = "logEntryView1";
-            this.logEntryView1.Size = new System.Drawing.Size(934, 521);
-            this.logEntryView1.TabIndex = 0;
-            // 
-            // loggerView1
-            // 
-            this.loggerView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.loggerView1.Location = new System.Drawing.Point(3, 3);
-            this.loggerView1.Name = "loggerView1";
-            this.loggerView1.Size = new System.Drawing.Size(934, 521);
-            this.loggerView1.TabIndex = 2;
             // 
             // Form1
             // 
@@ -226,7 +227,7 @@ namespace log4netParser {
             this.panel2.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.mainLogTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).EndInit();
             this.ResumeLayout(false);
 
@@ -247,8 +248,8 @@ namespace log4netParser {
 		private System.Windows.Forms.Button searchButton;
 		private System.Windows.Forms.TextBox searchTextBox;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.TabPage tabPage1;
-        private LogEntryView logEntryView1;
+		private System.Windows.Forms.TabPage mainLogTabPage;
+        private LogEntryView mainLogEntryView;
 		private System.Windows.Forms.ToolTip toolTip1;
         private Controls.LoggerView loggerView1;
 	}

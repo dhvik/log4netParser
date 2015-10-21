@@ -21,9 +21,8 @@ namespace log4netParser {
         /// Gets the SortPropertyCore of the SortableSearchableList
         /// </summary>
         /// <value></value>
-        protected override PropertyDescriptor SortPropertyCore {
-            get { return _sortPropertyValue; }
-        }
+        protected override PropertyDescriptor SortPropertyCore => _sortPropertyValue;
+
         PropertyDescriptor _sortPropertyValue;
         #endregion
         #region protected override ListSortDirection SortDirectionCore
@@ -31,9 +30,8 @@ namespace log4netParser {
         /// Gets the SortDirectionCore of the SortableSearchableList
         /// </summary>
         /// <value></value>
-        protected override ListSortDirection SortDirectionCore {
-            get { return _sortDirectionValue; }
-        }
+        protected override ListSortDirection SortDirectionCore => _sortDirectionValue;
+
         ListSortDirection _sortDirectionValue;
         #endregion
         #region protected override bool SupportsSortingCore
@@ -41,27 +39,24 @@ namespace log4netParser {
         /// Gets the SupportsSortingCore of the SortableSearchableList
         /// </summary>
         /// <value></value>
-        protected override bool SupportsSortingCore {
-            get { return true; }
-        }
+        protected override bool SupportsSortingCore => true;
+
         #endregion
         #region protected override bool SupportsSearchingCore
         /// <summary>
         /// Gets the SupportsSearchingCore of the SortableSearchableList
         /// </summary>
         /// <value></value>
-        protected override bool SupportsSearchingCore {
-            get { return true; }
-        }
+        protected override bool SupportsSearchingCore => true;
+
         #endregion
         #region protected override bool IsSortedCore
         /// <summary>
         /// Gets the IsSortedCore of the SortableSearchableList
         /// </summary>
         /// <value></value>
-        protected override bool IsSortedCore {
-            get { return _isSortedValue; }
-        }
+        protected override bool IsSortedCore => _isSortedValue;
+
         bool _isSortedValue;
         #endregion
         private ArrayList _unsortedItems;
@@ -101,9 +96,8 @@ namespace log4netParser {
         /// <returns></returns>
         public int Find(string property, object key) {
             // Check the properties for a property with the specified name.
-            PropertyDescriptorCollection properties =
-                TypeDescriptor.GetProperties(typeof(T));
-            PropertyDescriptor prop = properties.Find(property, true);
+            var properties = TypeDescriptor.GetProperties(typeof(T));
+            var prop = properties.Find(property, true);
 
             // If there is not a match, return -1 otherwise pass search to
             // FindCore method.
@@ -235,7 +229,7 @@ namespace log4netParser {
 
         public int Hide(Func<T, bool> predicate) {
             if (_hiddenItems == null) _hiddenItems = new List<T>();
-            this.RaiseListChangedEvents = false;
+            RaiseListChangedEvents = false;
             var removedItems = 0;
             for (var i = Count - 1; i >= 0; i--) {
                 try {

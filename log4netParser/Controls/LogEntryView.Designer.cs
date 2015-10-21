@@ -28,20 +28,21 @@ namespace log4netParser.Controls {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dataGridView1 = new LoggerColoredDataGridView();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.hideLoggerXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.splitter1 = new System.Windows.Forms.Splitter();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.dataGridView1 = new log4netParser.Controls.LoggerColoredDataGridView();
             this.timeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.levelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.threadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.loggerDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.messageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.hideLoggerXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.findEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -69,38 +70,6 @@ namespace log4netParser.Controls {
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseClick);
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hideLoggerXToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
-            // 
-            // hideLoggerXToolStripMenuItem
-            // 
-            this.hideLoggerXToolStripMenuItem.Name = "hideLoggerXToolStripMenuItem";
-            this.hideLoggerXToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.hideLoggerXToolStripMenuItem.Text = "Hide Logger x";
-            this.hideLoggerXToolStripMenuItem.Click += new System.EventHandler(this.hideLoggerXToolStripMenuItem_Click);
-            // 
-            // splitter1
-            // 
-            this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter1.Location = new System.Drawing.Point(0, 351);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(668, 3);
-            this.splitter1.TabIndex = 2;
-            this.splitter1.TabStop = false;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(0, 354);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(668, 135);
-            this.richTextBox1.TabIndex = 3;
-            this.richTextBox1.Text = "";
             // 
             // timeDataGridViewTextBoxColumn
             // 
@@ -150,6 +119,46 @@ namespace log4netParser.Controls {
             // 
             this.bindingSource1.DataSource = typeof(log4netParser.LogEntry);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hideLoggerXToolStripMenuItem,
+            this.findEntryToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 70);
+            // 
+            // hideLoggerXToolStripMenuItem
+            // 
+            this.hideLoggerXToolStripMenuItem.Name = "hideLoggerXToolStripMenuItem";
+            this.hideLoggerXToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hideLoggerXToolStripMenuItem.Text = "Hide Logger x";
+            this.hideLoggerXToolStripMenuItem.Click += new System.EventHandler(this.hideLoggerXToolStripMenuItem_Click);
+            // 
+            // splitter1
+            // 
+            this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter1.Location = new System.Drawing.Point(0, 351);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(668, 3);
+            this.splitter1.TabIndex = 2;
+            this.splitter1.TabStop = false;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 354);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(668, 135);
+            this.richTextBox1.TabIndex = 3;
+            this.richTextBox1.Text = "";
+            // 
+            // findEntryToolStripMenuItem
+            // 
+            this.findEntryToolStripMenuItem.Name = "findEntryToolStripMenuItem";
+            this.findEntryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.findEntryToolStripMenuItem.Text = "Find entry";
+            this.findEntryToolStripMenuItem.Click += new System.EventHandler(this.findEntryToolStripMenuItem_Click);
+            // 
             // LogEntryView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -160,15 +169,13 @@ namespace log4netParser.Controls {
             this.Name = "LogEntryView";
             this.Size = new System.Drawing.Size(668, 489);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.DataGridView dataGridView1;
 		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.RichTextBox richTextBox1;
 		private System.Windows.Forms.BindingSource bindingSource1;
@@ -179,5 +186,7 @@ namespace log4netParser.Controls {
 		private DataGridViewTextBoxColumn messageDataGridViewTextBoxColumn;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem hideLoggerXToolStripMenuItem;
-	}
+        private ToolStripMenuItem findEntryToolStripMenuItem;
+        private LoggerColoredDataGridView dataGridView1;
+    }
 }

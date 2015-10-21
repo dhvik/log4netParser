@@ -43,9 +43,9 @@ namespace log4netParser {
             } else {
 
                 if (_current == null) {
-                    _current = new LogEntry {Message = line};
+                    _current = new LogEntry {Message = new LogMessage(line)};
                 } else {
-                    _current.Message += Environment.NewLine + line;
+                    _current.Message.Message += Environment.NewLine + line;
                 }
             }
             //2013-04-09 00:57:29,648 ERROR [57] EPiServer.Global.Global_Error - 1.2.5 Unhandled exception in ASP.NET
@@ -112,7 +112,7 @@ namespace log4netParser {
                         Level = match.Groups["level"].Value,
                         Thread = int.Parse(match.Groups["thread"].Value),
                         Logger = match.Groups["logger"].Value,
-                        Message = match.Groups["message"].Value
+                        Message = new LogMessage(match.Groups["message"].Value)
                     };
                     return entry;
                 }

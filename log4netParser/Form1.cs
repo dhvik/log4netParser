@@ -37,7 +37,14 @@ namespace log4netParser {
             InitializeComponent();
             textBox1.Text = Settings.Instance.LastLoadedFile;
             loggerView1.AddLogger += (sender, args) => AddLoggerTab(args.Logger);
+            EventHub.FindEntry += EventHub_FindEntry;
         }
+
+        private void EventHub_FindEntry(object source, LogEntryEventArgs e) {
+            SelectMainLogTab();
+        }
+
+
         #endregion
         /* *******************************************************************
 		 *  Methods
@@ -58,7 +65,7 @@ namespace log4netParser {
         /// </summary>
         /// <param name="logData"></param>
         private void SetViewModel(LogData logData) {
-            logEntryView1.LogData = logData;
+            mainLogEntryView.LogData = logData;
             loggerView1.LogData = logData;
         }
         #endregion
@@ -123,7 +130,7 @@ namespace log4netParser {
             }
             var dataToDisplay = CurrentData;
             if (!string.IsNullOrEmpty(searchString)) {
-                var matchingEntries = CurrentData.Entries.Where(item => IsMatch(searchString, item.Message)).ToList();
+                var matchingEntries = CurrentData.Entries.Where(item => IsMatch(searchString, item.Message.Message)).ToList();
                 var currentSearchData = new LogData();
                 currentSearchData.Entries.AddRange(matchingEntries);
                 currentSearchData.Analyze();
@@ -164,6 +171,9 @@ namespace log4netParser {
             tabControl1.SelectTab(tabPage);
         }
         #endregion
+        private void SelectMainLogTab() {
+            tabControl1.SelectTab(mainLogTabPage);
+        }
         #region private void CloseCurrentTab()
         /// <summary>
         /// Closes the current tab
@@ -171,7 +181,7 @@ namespace log4netParser {
         private void CloseCurrentTab() {
             //cannot close main tabs
             var tabToClose = tabControl1.SelectedTab;
-            if (tabToClose == tabPage1 || tabToClose == tabPage2)
+            if (tabToClose == mainLogTabPage || tabToClose == tabPage2)
                 return;
             tabControl1.SuspendLayout();
             var selectedIndex = tabControl1.SelectedIndex;

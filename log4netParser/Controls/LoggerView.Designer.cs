@@ -24,9 +24,9 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label3 = new System.Windows.Forms.Label();
-            this.dataGridView2 = new LoggerColoredDataGridView();
+            this.dataGridView2 = new log4netParser.Controls.LoggerColoredDataGridView();
             this.levelDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.noOfEntiresDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -81,8 +81,8 @@
             // noOfEntiresDataGridViewTextBoxColumn
             // 
             this.noOfEntiresDataGridViewTextBoxColumn.DataPropertyName = "NoOfEntires";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.noOfEntiresDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.noOfEntiresDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.noOfEntiresDataGridViewTextBoxColumn.HeaderText = "NoOfEntires";
             this.noOfEntiresDataGridViewTextBoxColumn.Name = "noOfEntiresDataGridViewTextBoxColumn";
             this.noOfEntiresDataGridViewTextBoxColumn.ReadOnly = true;
@@ -133,13 +133,12 @@
         #endregion
 
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.BindingSource bindingSource2;
         private System.Windows.Forms.DataGridViewTextBoxColumn levelDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn noOfEntiresDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem hideLoggerXToolStripMenuItem;
-
+        private LoggerColoredDataGridView dataGridView2;
     }
 }

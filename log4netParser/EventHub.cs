@@ -1,4 +1,5 @@
 ﻿using System;
+using log4netParser.Controls;
 
 namespace log4netParser {
     /// <summary>
@@ -18,21 +19,27 @@ namespace log4netParser {
         /// </summary>
         public static event HideLoggerEventHandler HideLogger;
         #endregion
+
+        public static event FindEntryEventHandler FindEntry;
         #region protected virtual void OnHideLogger(HideLoggerEventArgs e)
         /// <summary>
         /// Notifies the listeners of the HideLogger event
         /// </summary>
         /// <param name="e">The argument to send to the listeners</param>
-        public static void OnHideLogger(HideLoggerEventArgs e) {
-        	if(HideLogger != null) {
-        		HideLogger(null,e);
-        	}
+        public static void OnHideLogger(LogEntryEventArgs e) {
+            HideLogger?.Invoke(null,e);
         }
+
         #endregion
+
+        public static void OnFindEntry(LogEntryEventArgs e) {
+            FindEntry?.Invoke(null, e);
+        }
     }
 
-    public delegate void HideLoggerEventHandler(object source, HideLoggerEventArgs args);
-    public class HideLoggerEventArgs : EventArgs {
+    public delegate void FindEntryEventHandler(object source, LogEntryEventArgs e);
+    public delegate void HideLoggerEventHandler(object source, LogEntryEventArgs args);
+    public class LogEntryEventArgs : EventArgs {
         #region public LogEntry Entry
         /// <summary>
         /// Get/Sets the Entry of the HideLoggerEventArgs
@@ -44,14 +51,14 @@ namespace log4netParser {
         /// <summary>
         /// Initializes a new instance of the <b>HideLoggerEventArgs</b> class.
         /// </summary>
-        public HideLoggerEventArgs() { }
+        public LogEntryEventArgs() { }
         #endregion
         #region public HideLoggerEventArgs(LogEntry entry)
         /// <summary>
         /// Initializes a new instance of the <b>HideLoggerEventArgs</b> class.
         /// </summary>
         /// <param name="entry"></param>
-        public HideLoggerEventArgs(LogEntry entry) {
+        public LogEntryEventArgs(LogEntry entry) {
             Entry = entry;
         }
         #endregion

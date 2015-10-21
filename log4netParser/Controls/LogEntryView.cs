@@ -35,11 +35,32 @@ namespace log4netParser.Controls {
         /// <value></value>
         public LogData LogData {
             set {
-                LogEntires = value == null ? null : value.Entries;
+                LogEntires = value?.Entries;
             }
         }
         #endregion
+
+        public bool IsMainLog {
+            get { return _isMainLog; }
+            set {
+                if (_isMainLog != value) {
+                    _isMainLog = value;
+                    IsMainLogChanged();
+                }
+            }
+        }
+
+        private void IsMainLogChanged() {
+            if (IsMainLog) {
+                EventHub.FindEntry += EventHub_FindEntry;
+            } else {
+                EventHub.FindEntry -= EventHub_FindEntry;
+            }
+        }
+
+
         private LogEntry _currentContextItem;
+        private bool _isMainLog;
         /* *******************************************************************
 		 *  Constructors
 		 * *******************************************************************/
@@ -67,7 +88,7 @@ namespace log4netParser.Controls {
             if (dataGridView1.SelectedRows.Count > 0) {
                 var logEntry = dataGridView1.SelectedRows[0].DataBoundItem as LogEntry;
                 if (logEntry != null) {
-                    richTextBox1.Text = logEntry.Message;
+                    richTextBox1.Text = logEntry.Message.Message;
                 }
 
             }
@@ -107,7 +128,7 @@ namespace log4netParser.Controls {
         /// <param name="e">The <see cref="EventArgs"/> of the event.</param>
         private void hideLoggerXToolStripMenuItem_Click(object sender, EventArgs e) {
             if (_currentContextItem == null) return;
-            EventHub.OnHideLogger(new HideLoggerEventArgs(_currentContextItem));
+            EventHub.OnHideLogger(new LogEntryEventArgs(_currentContextItem));
         }
         #endregion
         #region void EventHub_HideLogger(object source, HideLoggerEventArgs args)
@@ -115,17 +136,35 @@ namespace log4netParser.Controls {
         /// This method is called when the EventHub's HideLogger event has been fired.
         /// </summary>
         /// <param name="source">The <see cref="object"/> that fired the event.</param>
-        /// <param name="args">The <see cref="HideLoggerEventArgs"/> of the event.</param>
-        void EventHub_HideLogger(object source, HideLoggerEventArgs args) {
-            if (args == null || args.Entry == null) return;
+        /// <param name="args">The <see cref="LogEntryEventArgs"/> of the event.</param>
+        void EventHub_HideLogger(object source, LogEntryEventArgs args) {
+            if (args?.Entry == null) return;
             var bindingSource = dataGridView1.DataSource as BindingSource;
-            if (bindingSource == null) return;
-            var list = bindingSource.DataSource as SortableSearchableList<LogEntry>;
+            var list = bindingSource?.DataSource as SortableSearchableList<LogEntry>;
             if (list == null) return;
-            int noIfItems = list.Hide(x => string.Equals(x.Logger, args.Entry.Logger, StringComparison.CurrentCultureIgnoreCase));
+            var noIfItems = list.Hide(x => string.Equals(x.Logger, args.Entry.Logger, StringComparison.CurrentCultureIgnoreCase));
             Debug.WriteLine("Hide " + noIfItems + " items.");
         }
         #endregion
 
+        private void EventHub_FindEntry(object source, LogEntryEventArgs args) {
+            if (args?.Entry == null) return;
+            var bindingSource = dataGridView1.DataSource as BindingSource;
+            var list = bindingSource?.DataSource as SortableSearchableList<LogEntry>;
+            if (list == null) return;
+            var indexOf = list.IndexOf(args.Entry);
+            if (indexOf >= 0) {
+                var firstRow = Math.Max(0, indexOf - dataGridView1.DisplayedRowCount(false)/2);
+                dataGridView1.FirstDisplayedScrollingRowIndex = firstRow;
+                dataGridView1.Rows[indexOf].Selected = true;
+            }
+        }
+        private void findEntryToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (IsMainLog) return;
+            if (_currentContextItem == null) return;
+            EventHub.OnFindEntry(new LogEntryEventArgs(_currentContextItem));
+
+        }
     }
+
 }

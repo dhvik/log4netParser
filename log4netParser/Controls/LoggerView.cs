@@ -92,15 +92,14 @@ namespace log4netParser.Controls {
         /// <param name="e">The <see cref="EventArgs"/> of the event.</param>
         private void hideLoggerXToolStripMenuItem_Click(object sender, EventArgs e) {
             if (_currentContextItem == null) return;
-            EventHub.OnHideLogger(new HideLoggerEventArgs(new LogEntry{Logger=_currentContextItem.Name}));
+            EventHub.OnHideLogger(new LogEntryEventArgs(new LogEntry{Logger=_currentContextItem.Name}));
         }
         #endregion
 
-        void EventHub_HideLogger(object source, HideLoggerEventArgs args) {
-            if (args == null || args.Entry == null) return;
+        void EventHub_HideLogger(object source, LogEntryEventArgs args) {
+            if (args?.Entry == null) return;
             var bindingSource = dataGridView2.DataSource as BindingSource;
-            if (bindingSource == null) return;
-            var list = bindingSource.DataSource as SortableSearchableList<Logger>;
+            var list = bindingSource?.DataSource as SortableSearchableList<Logger>;
             if (list == null) return;
             int noIfItems = list.Hide(x => string.Equals(x.Name, args.Entry.Logger, StringComparison.CurrentCultureIgnoreCase));
             Debug.WriteLine("Hide " + noIfItems + " items.");
