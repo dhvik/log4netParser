@@ -13,6 +13,6 @@ Close opened tabs with the close (x) button
 
 ##Open with log4net parser context menu in Windows Explorer
 To be able to use a context menu in the windows explorer you need to enter some information in the registry.
-The [openWithLog4net.reg](log4netParser/openWithLog4net.reg) file contains an example on what information that
+The [openWithLog4net.reg](log4netParser/openWithLog4netReg.reg) file contains an example on what information that
 needs to be added in the registry. Edit this file and correct the path to the log4net.exe file and then double click it 
 to add the information to the registry. It will be added as a shortcut for ALL files "*/shell".
