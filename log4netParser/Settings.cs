@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using log4net;
 using Meridium.Lib.Xml.Serialization;
 
@@ -25,7 +26,9 @@ namespace log4netParser {
 				if (_instance == null) {
 					lock (InstanceLock) {
 						if (_instance == null) {
-							var file = new FileInfo("log4netParserSettings.xml");
+                            var exe = new FileInfo(Assembly.GetEntryAssembly().Location);
+
+                            var file = new FileInfo(Path.Combine(exe.DirectoryName,"log4netParserSettings.xml"));
 							Settings tmp = null;
 							try {
 								if (file.Exists)

@@ -105,6 +105,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="openWithLog4netReg.reg" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\LogEntry.datasource" />
     <None Include="Properties\DataSources\Logger.datasource" />
