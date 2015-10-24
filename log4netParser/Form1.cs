@@ -18,7 +18,7 @@ namespace log4netParser {
             get { return _currentData; }
             set {
                 if (_currentData != value) {
-                    SetViewModel(_currentData);
+                    SetViewModel(value);
                     _currentData = value;
 
                 }
@@ -56,7 +56,12 @@ namespace log4netParser {
         /// <param name="sender">The <see cref="object"/> that fired the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> of the event.</param>
         private void button1_Click(object sender, EventArgs e) {
-            CurrentData = ParseLogfile(textBox1.Text);
+            var filename = textBox1.Text;
+            if (!File.Exists(filename)) {
+                MessageBox.Show(this, $"Cannot find file '{filename}'", @"File not found");
+            } else {
+                CurrentData = ParseLogfile(filename);
+            }
         }
         #endregion
         #region private void SetViewModel(LogData logData)
@@ -235,5 +240,9 @@ namespace log4netParser {
         }
         #endregion
 
+        public void LoadFromFile(string filename) {
+            textBox1.Text = filename;
+            button1_Click(null, EventArgs.Empty);
+        }
     }
 }
