@@ -1,5 +1,4 @@
 ﻿using System;
-using log4netParser.Controls;
 
 namespace log4netParser {
     /// <summary>
@@ -13,21 +12,20 @@ namespace log4netParser {
         /* *******************************************************************
          *  Events 
          * *******************************************************************/
-        #region public event HideLoggerEventHandler HideLogger
         /// <summary>
         /// This event is fired when 
         /// </summary>
-        public static event HideLoggerEventHandler HideLogger;
-        #endregion
+        public static event LogEntryEventHandler HideLogger;
+        public static event LogEntryEventHandler FindEntry;
+        public static event LogEntryEventHandler FilterThread;
 
-        public static event FindEntryEventHandler FindEntry;
         #region protected virtual void OnHideLogger(HideLoggerEventArgs e)
         /// <summary>
         /// Notifies the listeners of the HideLogger event
         /// </summary>
         /// <param name="e">The argument to send to the listeners</param>
         public static void OnHideLogger(LogEntryEventArgs e) {
-            HideLogger?.Invoke(null,e);
+            HideLogger?.Invoke(null, e);
         }
 
         #endregion
@@ -35,10 +33,13 @@ namespace log4netParser {
         public static void OnFindEntry(LogEntryEventArgs e) {
             FindEntry?.Invoke(null, e);
         }
+
+        public static void OnFilterThread(LogEntryEventArgs e) {
+            FilterThread?.Invoke(null, e);
+        }
     }
 
-    public delegate void FindEntryEventHandler(object source, LogEntryEventArgs e);
-    public delegate void HideLoggerEventHandler(object source, LogEntryEventArgs args);
+    public delegate void LogEntryEventHandler(object source, LogEntryEventArgs e);
     public class LogEntryEventArgs : EventArgs {
         #region public LogEntry Entry
         /// <summary>

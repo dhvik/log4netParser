@@ -71,6 +71,7 @@ namespace log4netParser.Controls {
         public LogEntryView() {
             InitializeComponent();
             EventHub.HideLogger += EventHub_HideLogger;
+            EventHub.FilterThread += EventHub_FilterThread;
         }
         #endregion
         /* *******************************************************************
@@ -146,6 +147,14 @@ namespace log4netParser.Controls {
             Debug.WriteLine("Hide " + noIfItems + " items.");
         }
         #endregion
+        private void EventHub_FilterThread(object source, LogEntryEventArgs args) {
+            if (args?.Entry == null) return;
+            var bindingSource = dataGridView1.DataSource as BindingSource;
+            var list = bindingSource?.DataSource as SortableSearchableList<LogEntry>;
+            if (list == null) return;
+            var noIfItems = list.Hide(x => x.Thread != args.Entry.Thread);
+            Debug.WriteLine("Hide " + noIfItems + " items.");
+        }
 
         private void EventHub_FindEntry(object source, LogEntryEventArgs args) {
             if (args?.Entry == null) return;
@@ -154,7 +163,7 @@ namespace log4netParser.Controls {
             if (list == null) return;
             var indexOf = list.IndexOf(args.Entry);
             if (indexOf >= 0) {
-                var firstRow = Math.Max(0, indexOf - dataGridView1.DisplayedRowCount(false)/2);
+                var firstRow = Math.Max(0, indexOf - dataGridView1.DisplayedRowCount(false) / 2);
                 dataGridView1.FirstDisplayedScrollingRowIndex = firstRow;
                 dataGridView1.Rows[indexOf].Selected = true;
             }
@@ -164,6 +173,10 @@ namespace log4netParser.Controls {
             if (_currentContextItem == null) return;
             EventHub.OnFindEntry(new LogEntryEventArgs(_currentContextItem));
 
+        }
+
+        private void filterOnThreadToolStripMenuItem_Click(object sender, EventArgs e) {
+            EventHub.OnFilterThread(new LogEntryEventArgs(_currentContextItem));
         }
     }
 

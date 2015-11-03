@@ -37,9 +37,10 @@ namespace log4netParser.Controls {
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.hideLoggerXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.findEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.findEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.filterOnThreadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -123,16 +124,24 @@ namespace log4netParser.Controls {
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.hideLoggerXToolStripMenuItem,
-            this.findEntryToolStripMenuItem});
+            this.findEntryToolStripMenuItem,
+            this.filterOnThreadToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(158, 92);
             // 
             // hideLoggerXToolStripMenuItem
             // 
             this.hideLoggerXToolStripMenuItem.Name = "hideLoggerXToolStripMenuItem";
-            this.hideLoggerXToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hideLoggerXToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.hideLoggerXToolStripMenuItem.Text = "Hide Logger x";
             this.hideLoggerXToolStripMenuItem.Click += new System.EventHandler(this.hideLoggerXToolStripMenuItem_Click);
+            // 
+            // findEntryToolStripMenuItem
+            // 
+            this.findEntryToolStripMenuItem.Name = "findEntryToolStripMenuItem";
+            this.findEntryToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.findEntryToolStripMenuItem.Text = "Find entry";
+            this.findEntryToolStripMenuItem.Click += new System.EventHandler(this.findEntryToolStripMenuItem_Click);
             // 
             // splitter1
             // 
@@ -152,12 +161,12 @@ namespace log4netParser.Controls {
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
             // 
-            // findEntryToolStripMenuItem
+            // filterOnThreadToolStripMenuItem
             // 
-            this.findEntryToolStripMenuItem.Name = "findEntryToolStripMenuItem";
-            this.findEntryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.findEntryToolStripMenuItem.Text = "Find entry";
-            this.findEntryToolStripMenuItem.Click += new System.EventHandler(this.findEntryToolStripMenuItem_Click);
+            this.filterOnThreadToolStripMenuItem.Name = "filterOnThreadToolStripMenuItem";
+            this.filterOnThreadToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.filterOnThreadToolStripMenuItem.Text = "Filter on Thread";
+            this.filterOnThreadToolStripMenuItem.Click += new System.EventHandler(this.filterOnThreadToolStripMenuItem_Click);
             // 
             // LogEntryView
             // 
@@ -188,5 +197,6 @@ namespace log4netParser.Controls {
         private ToolStripMenuItem hideLoggerXToolStripMenuItem;
         private ToolStripMenuItem findEntryToolStripMenuItem;
         private LoggerColoredDataGridView dataGridView1;
+        private ToolStripMenuItem filterOnThreadToolStripMenuItem;
     }
 }
