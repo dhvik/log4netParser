@@ -32,7 +32,7 @@ namespace log4netParser {
 		/// Get/Sets the Thread of the LogEntry
 		/// </summary>
 		/// <value></value>
-		public int Thread { get; set; }
+		public int? Thread { get; set; }
 		#endregion
 		#region public string Logger
 		/// <summary>
@@ -40,10 +40,11 @@ namespace log4netParser {
 		/// </summary>
 		/// <value></value>
 		public string Logger { get; set; }
-		#endregion
-		/* *******************************************************************
-		 *  Methods
-		 * *******************************************************************/
+        #endregion
+        public string Process { get; set; }
+        /* *******************************************************************
+         *  Methods
+         * *******************************************************************/
 		#region public override string ToString()
 		/// <summary>
 		/// Returns a <see cref="string"/> that represents the current <see cref="log4netParser.LogEntry"/>.
