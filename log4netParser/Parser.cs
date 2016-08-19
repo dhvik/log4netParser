@@ -64,7 +64,7 @@ namespace log4netParser {
 \s
 \d{2}:\d{2}:\d{2},\d{3})\s+
 (?<level>\w+)\s+
-\[(?<thread>\d+)\]\s*
+\[(?<thread>[^\]]+)\]\s*
 (?<logger>\S+)\s+
 (?<whut>\S+)\s+
 (?<message>.*)$
@@ -74,7 +74,7 @@ namespace log4netParser {
 (?<date>\d{4}-\d{2}-\d{2}
 \s
 \d{2}:\d{2}:\d{2},\d{3})\s+
-\[(?<thread>\d+)\]\s*
+\[(?<thread>[^\]]+)\]\s*
 (?<level>\w+)\s+
 (?<logger>\S+)\s+
 (?<whut>\S+)\s+
@@ -119,9 +119,9 @@ T
             foreach (var logPattern in LogPatterns) {
                 var match = Regex.Match(line, logPattern.Pattern, RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
                 if (match.Success) {
-                    int? thread = null;
+                    string thread = null;
                     if (match.Groups["thread"].Success) {
-                        thread = int.Parse(match.Groups["thread"].Value);
+                        thread = match.Groups["thread"].Value;
                     }
                     string process = null;
                     if (match.Groups["process"].Success) {

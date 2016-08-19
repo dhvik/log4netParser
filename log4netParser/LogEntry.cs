@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace log4netParser {
 	public class LogEntry {
@@ -27,12 +26,12 @@ namespace log4netParser {
 		/// <value></value>
 		public string Level { get; set; }
 		#endregion
-		#region public int Thread
+		#region public string Thread
 		/// <summary>
 		/// Get/Sets the Thread of the LogEntry
 		/// </summary>
 		/// <value></value>
-		public int? Thread { get; set; }
+		public string Thread { get; set; }
 		#endregion
 		#region public string Logger
 		/// <summary>
