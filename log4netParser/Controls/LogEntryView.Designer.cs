@@ -32,8 +32,11 @@ namespace log4netParser.Controls {
             this.hideLoggerXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.filterOnThreadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.splitter1 = new System.Windows.Forms.Splitter();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.liveToolstripButton = new System.Windows.Forms.ToolStripButton();
             this.dataGridView1 = new log4netParser.Controls.LoggerColoredDataGridView();
             this.timeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.levelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,6 +46,14 @@ namespace log4netParser.Controls {
             this.messageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.contextMenuStrip1.SuspendLayout();
+            this.toolStripContainer1.ContentPanel.SuspendLayout();
+            this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
+            this.toolStripContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
@@ -77,23 +88,70 @@ namespace log4netParser.Controls {
             this.filterOnThreadToolStripMenuItem.Text = "Filter on Thread";
             this.filterOnThreadToolStripMenuItem.Click += new System.EventHandler(this.filterOnThreadToolStripMenuItem_Click);
             // 
-            // splitter1
-            // 
-            this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter1.Location = new System.Drawing.Point(0, 351);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(668, 3);
-            this.splitter1.TabIndex = 2;
-            this.splitter1.TabStop = false;
-            // 
             // richTextBox1
             // 
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(0, 354);
+            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(668, 135);
+            this.richTextBox1.Size = new System.Drawing.Size(668, 228);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
+            // 
+            // toolStripContainer1
+            // 
+            // 
+            // toolStripContainer1.ContentPanel
+            // 
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(668, 464);
+            this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
+            this.toolStripContainer1.Name = "toolStripContainer1";
+            this.toolStripContainer1.Size = new System.Drawing.Size(668, 489);
+            this.toolStripContainer1.TabIndex = 0;
+            this.toolStripContainer1.Text = "toolStripContainer1";
+            // 
+            // toolStripContainer1.TopToolStripPanel
+            // 
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip1);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.dataGridView1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.richTextBox1);
+            this.splitContainer1.Size = new System.Drawing.Size(668, 464);
+            this.splitContainer1.SplitterDistance = 232;
+            this.splitContainer1.TabIndex = 5;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.liveToolstripButton});
+            this.toolStrip1.Location = new System.Drawing.Point(3, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(44, 25);
+            this.toolStrip1.TabIndex = 0;
+            // 
+            // liveToolstripButton
+            // 
+            this.liveToolstripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.liveToolstripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.liveToolstripButton.Name = "liveToolstripButton";
+            this.liveToolstripButton.Size = new System.Drawing.Size(32, 22);
+            this.liveToolstripButton.Text = "Live";
+            this.liveToolstripButton.ToolTipText = "Live monitoring of file";
+            this.liveToolstripButton.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // dataGridView1
             // 
@@ -110,13 +168,13 @@ namespace log4netParser.Controls {
             this.loggerDataGridViewTextBoxColumn,
             this.messageDataGridViewTextBoxColumn});
             this.dataGridView1.DataSource = this.bindingSource1;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(668, 351);
+            this.dataGridView1.Size = new System.Drawing.Size(668, 232);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseClick);
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
@@ -176,17 +234,27 @@ namespace log4netParser.Controls {
             // bindingSource1
             // 
             this.bindingSource1.DataSource = typeof(log4netParser.LogEntry);
+            this.bindingSource1.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.bindingSource1_ListChanged);
             // 
             // LogEntryView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.splitter1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.toolStripContainer1);
             this.Name = "LogEntryView";
             this.Size = new System.Drawing.Size(668, 489);
             this.contextMenuStrip1.ResumeLayout(false);
+            this.toolStripContainer1.ContentPanel.ResumeLayout(false);
+            this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
+            this.toolStripContainer1.TopToolStripPanel.PerformLayout();
+            this.toolStripContainer1.ResumeLayout(false);
+            this.toolStripContainer1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
@@ -194,7 +262,6 @@ namespace log4netParser.Controls {
 		}
 
 		#endregion
-		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.RichTextBox richTextBox1;
 		private System.Windows.Forms.BindingSource bindingSource1;
         private ContextMenuStrip contextMenuStrip1;
@@ -208,5 +275,9 @@ namespace log4netParser.Controls {
         private DataGridViewTextBoxColumn Process;
         private DataGridViewTextBoxColumn levelDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn timeDataGridViewTextBoxColumn;
+        private ToolStripContainer toolStripContainer1;
+        private SplitContainer splitContainer1;
+        private ToolStrip toolStrip1;
+        private ToolStripButton liveToolstripButton;
     }
 }

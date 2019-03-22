@@ -32,7 +32,7 @@ namespace log4netParser {
             this.searchTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.closeTabButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.browseButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -44,6 +44,7 @@ namespace log4netParser {
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -58,7 +59,7 @@ namespace log4netParser {
             this.panel1.Controls.Add(this.searchTextBox);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.closeTabButton);
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.browseButton);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.textBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -107,16 +108,16 @@ namespace log4netParser {
             this.closeTabButton.UseVisualStyleBackColor = true;
             this.closeTabButton.Click += new System.EventHandler(this.closeTabButton_Click);
             // 
-            // button1
+            // browseButton
             // 
-            this.button1.Location = new System.Drawing.Point(328, 11);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Parse";
-            this.toolTip1.SetToolTip(this.button1, "Click to parse the selected logfile");
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.browseButton.Location = new System.Drawing.Point(328, 11);
+            this.browseButton.Name = "browseButton";
+            this.browseButton.Size = new System.Drawing.Size(75, 23);
+            this.browseButton.TabIndex = 2;
+            this.browseButton.Text = "Browse...";
+            this.toolTip1.SetToolTip(this.browseButton, "Click to parse the selected logfile");
+            this.browseButton.UseVisualStyleBackColor = true;
+            this.browseButton.Click += new System.EventHandler(this.BrowseButtonClick);
             // 
             // label1
             // 
@@ -131,9 +132,10 @@ namespace log4netParser {
             // 
             this.textBox1.Location = new System.Drawing.Point(54, 13);
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(268, 20);
             this.textBox1.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.textBox1, "Enter the filename of a log4net file to parse");
+            this.toolTip1.SetToolTip(this.textBox1, "Current logfile");
             // 
             // panel2
             // 
@@ -190,7 +192,6 @@ namespace log4netParser {
             this.mainLogEntryView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainLogEntryView.IsMainLog = true;
             this.mainLogEntryView.Location = new System.Drawing.Point(3, 3);
-            this.mainLogEntryView.LogEntires = null;
             this.mainLogEntryView.Name = "mainLogEntryView";
             this.mainLogEntryView.Size = new System.Drawing.Size(934, 521);
             this.mainLogEntryView.TabIndex = 0;
@@ -207,6 +208,11 @@ namespace log4netParser {
             // bindingSource2
             // 
             this.bindingSource2.DataSource = typeof(log4netParser.Logger);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "error.log";
+            this.openFileDialog1.Title = "Select logfile to open";
             // 
             // Form1
             // 
@@ -236,7 +242,7 @@ namespace log4netParser {
 		#endregion
 
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button browseButton;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.Panel panel2;
@@ -252,6 +258,7 @@ namespace log4netParser {
         private LogEntryView mainLogEntryView;
 		private System.Windows.Forms.ToolTip toolTip1;
         private Controls.LoggerView loggerView1;
-	}
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+    }
 }
 

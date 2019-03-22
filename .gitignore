@@ -146,3 +146,4 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
+/.vs/log4netParser/v15/Server/sqlite3

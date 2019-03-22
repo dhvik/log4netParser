@@ -4,28 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace log4netParser {
-    public partial class Form1 : Form {
+namespace log4netParser
+{
+    public partial class Form1 : Form
+    {
         /* *******************************************************************
          *  Properties
          * *******************************************************************/
-        #region public LogData CurrentData
-        /// <summary>
-        /// Get/Sets the CurrentData of the Form1
-        /// </summary>
-        /// <value></value>
-        public LogData CurrentData {
-            get { return _currentData; }
-            set {
-                if (_currentData != value) {
-                    SetViewModel(value);
-                    _currentData = value;
-
-                }
-            }
-        }
-        private LogData _currentData;
-        #endregion
         /* *******************************************************************
          *  Constructors
          * *******************************************************************/
@@ -33,14 +18,21 @@ namespace log4netParser {
         /// <summary>
         /// Initializes a new instance of the <b>Form1</b> class.
         /// </summary>
-        public Form1() {
+        public Form1()
+        {
             InitializeComponent();
             textBox1.Text = Settings.Instance.LastLoadedFile;
+
+            LogDataSource.Instance = new LogDataSource(this);
+            loggerView1.DataSource = LogDataSource.Instance.LogData.LoggerDataSource;
+            mainLogEntryView.DataSource = LogDataSource.Instance.LogData.LogEntryDataSource;
+
             loggerView1.AddLogger += (sender, args) => AddLoggerTab(args.Logger);
             EventHub.FindEntry += EventHub_FindEntry;
         }
 
-        private void EventHub_FindEntry(object source, LogEntryEventArgs e) {
+        private void EventHub_FindEntry(object source, LogEntryEventArgs e)
+        {
             SelectMainLogTab();
         }
 
@@ -49,79 +41,36 @@ namespace log4netParser {
         /* *******************************************************************
 		 *  Methods
 		 * *******************************************************************/
-        #region private void button1_Click(object sender, EventArgs e)
         /// <summary>
         /// This method is called when the button1's Click event has been fired.
         /// </summary>
         /// <param name="sender">The <see cref="object"/> that fired the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> of the event.</param>
-        private void button1_Click(object sender, EventArgs e) {
-            var filename = textBox1.Text;
-            if (!File.Exists(filename)) {
-                MessageBox.Show(this, $"Cannot find file '{filename}'", @"File not found");
-            } else {
-                CurrentData = ParseLogfile(filename);
-            }
-        }
-        #endregion
-        #region private void SetViewModel(LogData logData)
-        /// <summary>
-        /// Sets the supplied logData as the current view model
-        /// </summary>
-        /// <param name="logData"></param>
-        private void SetViewModel(LogData logData) {
-            mainLogEntryView.LogData = logData;
-            loggerView1.LogData = logData;
-        }
-        #endregion
-        #region private LogData ParseLogfile(string filename)
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        private LogData ParseLogfile(string filename) {
-            Settings.Instance.LastLoadedFile = filename;
-            Settings.Instance.Save();
-            var file = new FileInfo(filename);
-            using (var stream = file.OpenRead()) {
-                return ParseStream(stream);
-            }
-        }
-        #endregion
-        #region private static LogData ParseStream(Stream stream)
-        /// <summary>
-        /// Parses the supplied stream and returns the logdata
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <returns></returns>
-        private static LogData ParseStream(Stream stream) {
-            var parser = new Parser();
+        private void BrowseButtonClick(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(textBox1.Text))
+                openFileDialog1.FileName = textBox1.Text;
 
-            using (var reader = new StreamReader(stream)) {
-                string line;
-                while ((line = reader.ReadLine()) != null) {
-                    parser.ParseLine(line);
+            if (openFileDialog1.ShowDialog(FindForm()) == DialogResult.OK)
+            {
+                var filename = openFileDialog1.FileName;
+                if (!LoadFromFile(filename))
+                {
+                    MessageBox.Show(this, $"Cannot find file '{filename}'", @"File not found");
                 }
+
             }
-            parser.LogData.Analyze();
-            return parser.LogData;
         }
-        #endregion
+       
         #region private void LoadDataFromClipboard()
         /// <summary>
         /// Loads the clipboard as data
         /// </summary>
-        private void LoadDataFromClipboard() {
+        private void LoadDataFromClipboard()
+        {
             if (!Clipboard.ContainsText()) return;
             var text = Clipboard.GetText();
-            using (var stream = new MemoryStream()) {
-                var writer = new StreamWriter(stream);
-                writer.Write(text);
-                writer.Flush();
-                stream.Position = 0;
-                CurrentData = ParseStream(stream);
-            }
+            LogDataSource.Instance.SetData(text);
         }
         #endregion
         #region private void PerformSearch(string searchString)
@@ -129,19 +78,22 @@ namespace log4netParser {
         /// Performs a search in the current data
         /// </summary>
         /// <param name="searchString"></param>
-        private void PerformSearch(string searchString) {
-            if (CurrentData == null) {
-                return;
-            }
-            var dataToDisplay = CurrentData;
-            if (!string.IsNullOrEmpty(searchString)) {
-                var matchingEntries = CurrentData.Entries.Where(item => IsMatch(searchString, item.Message.Message)).ToList();
-                var currentSearchData = new LogData();
-                currentSearchData.Entries.AddRange(matchingEntries);
-                currentSearchData.Analyze();
-                dataToDisplay = currentSearchData;
-            }
-            SetViewModel(dataToDisplay);
+        private void PerformSearch(string searchString)
+        {
+            //if (CurrentData == null)
+            //{
+            //    return;
+            //}
+            //var dataToDisplay = CurrentData;
+            //if (!string.IsNullOrEmpty(searchString))
+            //{
+            //    var matchingEntries = CurrentData.Entries.Where(item => IsMatch(searchString, item.Message.Message)).ToList();
+            //    var currentSearchData = new LogData();
+            //    currentSearchData.Entries.AddRange(matchingEntries);
+            //    currentSearchData.Analyze();
+            //    dataToDisplay = currentSearchData;
+            //}
+            //SetViewModel(dataToDisplay);
         }
         #endregion
         #region private bool IsMatch(string searchString, string message)
@@ -151,7 +103,8 @@ namespace log4netParser {
         /// <param name="searchString"></param>
         /// <param name="message"></param>
         /// <returns>True if it is match, otherwise false.</returns>
-        private bool IsMatch(string searchString, string message) {
+        private bool IsMatch(string searchString, string message)
+        {
             if (string.IsNullOrEmpty(message))
                 return false;
             if (string.IsNullOrEmpty(searchString))
@@ -165,10 +118,12 @@ namespace log4netParser {
         /// 
         /// </summary>
         /// <param name="logger"></param>
-        private void AddLoggerTab(Logger logger) {
+        private void AddLoggerTab(Logger logger)
+        {
             var tabPage = new TabPage(logger.Name);
-            var view = new LogEntryView {
-                LogEntires = logger.Entries,
+            var view = new LogEntryView
+            {
+                DataSource =  logger.DataSource,
                 Dock = DockStyle.Fill
             };
             tabPage.Controls.Add(view);
@@ -176,23 +131,28 @@ namespace log4netParser {
             tabControl1.SelectTab(tabPage);
         }
         #endregion
-        private void SelectMainLogTab() {
+        private void SelectMainLogTab()
+        {
             tabControl1.SelectTab(mainLogTabPage);
         }
         #region private void CloseCurrentTab()
         /// <summary>
         /// Closes the current tab
         /// </summary>
-        private void CloseCurrentTab() {
+        private void CloseCurrentTab()
+        {
             //cannot close main tabs
             var tabToClose = tabControl1.SelectedTab;
             if (tabToClose == mainLogTabPage || tabToClose == tabPage2)
                 return;
             tabControl1.SuspendLayout();
             var selectedIndex = tabControl1.SelectedIndex;
-            if (selectedIndex == (tabControl1.TabCount - 1)) {
+            if (selectedIndex == (tabControl1.TabCount - 1))
+            {
                 selectedIndex--;
-            } else {
+            }
+            else
+            {
                 selectedIndex++;
             }
             tabControl1.SelectedIndex = selectedIndex;
@@ -210,7 +170,8 @@ namespace log4netParser {
         /// </summary>
         /// <param name="sender">The <see cref="object"/> that fired the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> of the event.</param>
-        private void closeTabButton_Click(object sender, EventArgs e) {
+        private void closeTabButton_Click(object sender, EventArgs e)
+        {
             CloseCurrentTab();
         }
 
@@ -223,7 +184,8 @@ namespace log4netParser {
         /// </summary>
         /// <param name="sender">The <see cref="object"/> that fired the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> of the event.</param>
-        private void searchButton_Click(object sender, EventArgs e) {
+        private void searchButton_Click(object sender, EventArgs e)
+        {
             PerformSearch(searchTextBox.Text);
         }
         #endregion
@@ -233,16 +195,26 @@ namespace log4netParser {
         /// </summary>
         /// <param name="sender">The <see cref="object"/> that fired the event.</param>
         /// <param name="e">The <see cref="KeyEventArgs"/> of the event.</param>
-        private void Form1_KeyDown(object sender, KeyEventArgs e) {
-            if (e.Control && e.KeyCode == Keys.V) {
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.V)
+            {
                 LoadDataFromClipboard();
             }
         }
         #endregion
 
-        public void LoadFromFile(string filename) {
+        public bool LoadFromFile(string filename)
+        {
+            if (!File.Exists(filename))
+            {
+                textBox1.Text = null;
+                return false;
+            }
+
             textBox1.Text = filename;
-            button1_Click(null, EventArgs.Empty);
+            LogDataSource.Instance.MonitorFile(filename);
+            return true;
         }
     }
 }

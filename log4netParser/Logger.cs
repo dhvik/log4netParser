@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace log4netParser {
     public class Logger {
@@ -24,27 +25,23 @@ namespace log4netParser {
 		/// Gets the NoOfEntires of the Logger
 		/// </summary>
 		/// <value></value>
-		public int NoOfEntires { get { return Entries.Count; } }
+		public int NoOfEntires { get { return DataSource.Count; } }
 		#endregion
-		#region public List<LogEntry> Entries
-		/// <summary>
-		/// Get/Sets the Entries of the Logger
-		/// </summary>
-		/// <value></value>
-		public List<LogEntry> Entries { get; private set; }
-		#endregion
+        public SortableSearchableList<LogEntry> DataSource { get; }
 		/* *******************************************************************
 		 *  Constructors
 		 * *******************************************************************/
 		#region public Logger(LogEntry logEntry)
-		/// <summary>
-		/// Initializes a new instance of the <b>Logger</b> class.
-		/// </summary>
-		/// <param name="logEntry"></param>
-		public Logger(LogEntry logEntry) {
+
+        /// <summary>
+        /// Initializes a new instance of the <b>Logger</b> class.
+        /// </summary>
+        /// <param name="invoke"></param>
+        /// <param name="logEntry"></param>
+        public Logger(ISynchronizeInvoke invoke, LogEntry logEntry) {
 			Name = logEntry.Logger;
 			Level = logEntry.Level;
-			Entries = new List<LogEntry> { logEntry };
+		    DataSource = new SortableSearchableList<LogEntry>(invoke) {logEntry};
 		}
 		#endregion
 	}

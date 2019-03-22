@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -12,33 +11,17 @@ namespace log4netParser.Controls {
         /* *******************************************************************
          *  Properties
          * *******************************************************************/
-        #region public List<LogEntry> LogEntires
-        /// <summary>
-        /// Get/Sets the LogEntires of the LogEntryView
-        /// </summary>
-        /// <value></value>
-        public List<LogEntry> LogEntires {
-            get { return _logEntires; }
-            set {
-                if (_logEntires != value) {
-                    _logEntires = value;
-                    bindingSource1.DataSource = new SortableSearchableList<LogEntry>(_logEntires);
-                }
+
+        public SortableSearchableList<LogEntry> DataSource
+        {
+            set
+            {
+                bindingSource1.DataSource = value;
             }
         }
-        private List<LogEntry> _logEntires;
-        #endregion
-        #region public LogData LogData
-        /// <summary>
-        /// Sets the LogData of the LogEntryView
-        /// </summary>
-        /// <value></value>
-        public LogData LogData {
-            set {
-                LogEntires = value?.Entries;
-            }
-        }
-        #endregion
+
+        
+
 
         public bool IsMainLog {
             get { return _isMainLog; }
@@ -51,9 +34,13 @@ namespace log4netParser.Controls {
         }
 
         private void IsMainLogChanged() {
-            if (IsMainLog) {
+            if (IsMainLog)
+            {
+                liveToolstripButton.Checked = Settings.Instance.Live;
+                liveToolstripButton.Visible = true;
                 EventHub.FindEntry += EventHub_FindEntry;
             } else {
+                liveToolstripButton.Visible = false;
                 EventHub.FindEntry -= EventHub_FindEntry;
             }
         }
@@ -70,6 +57,8 @@ namespace log4netParser.Controls {
         /// </summary>
         public LogEntryView() {
             InitializeComponent();
+            liveToolstripButton.Visible = false;
+            bindingSource1.RaiseListChangedEvents = true;
             EventHub.HideLogger += EventHub_HideLogger;
             EventHub.FilterThread += EventHub_FilterThread;
         }
@@ -177,6 +166,22 @@ namespace log4netParser.Controls {
 
         private void filterOnThreadToolStripMenuItem_Click(object sender, EventArgs e) {
             EventHub.OnFilterThread(new LogEntryEventArgs(_currentContextItem));
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            liveToolstripButton.Checked = !liveToolstripButton.Checked;
+            if (IsMainLog)
+            {
+                Settings.Instance.Live = liveToolstripButton.Checked;
+                Settings.Instance.Save();
+            }
+        }
+
+        private void bindingSource1_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
+        {
+            Debug.WriteLine("LogEntryView data list changed");
+            //bindingSource1.ResetBindings(false);
         }
     }
 

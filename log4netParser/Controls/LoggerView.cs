@@ -7,18 +7,16 @@ namespace log4netParser.Controls {
         /* *******************************************************************
          *  Properties
          * *******************************************************************/
-        #region public LogData LogData
-        /// <summary>
-        /// Sets the LogData of the LoggerView
-        /// </summary>
-        /// <value></value>
-        public LogData LogData {
-            set {
-                bindingSource2.DataSource = value == null ? null : new SortableSearchableList<Logger>(value.Loggers);
+        private Logger _currentContextItem;
+
+        public SortableSearchableList<Logger> DataSource
+        {
+            set
+            {
+                bindingSource2.DataSource = value;
             }
         }
-        #endregion
-        private Logger _currentContextItem;
+
         /* *******************************************************************
          *  Constructors
          * *******************************************************************/

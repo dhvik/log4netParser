@@ -9,24 +9,12 @@ namespace log4netParser {
          *  Properties
          * *******************************************************************/
         private LogEntry _current;
-        #region public LogData LogData
-        /// <summary>
-        /// Get/Sets the LogData of the Parser
-        /// </summary>
-        /// <value></value>
-        public LogData LogData { get; private set; }
-        #endregion
-        /* *******************************************************************
-		 *  Constructors
-		 * *******************************************************************/
-        #region public Parser()
-        /// <summary>
-        /// Initializes a new instance of the <b>Parser</b> class.
-        /// </summary>
-        public Parser() {
-            LogData = new LogData();
+        private readonly LogData _logData;
+
+        public Parser(LogData data)
+        {
+            _logData = data;
         }
-        #endregion
         /* *******************************************************************
 		 *  Methods
 		 * *******************************************************************/
@@ -39,7 +27,7 @@ namespace log4netParser {
             var entry = ParseEntry(line);
             if (entry != null) {
                 _current = entry;
-                LogData.Entries.Add(entry);
+                _logData.Add(entry);
             } else {
 
                 if (_current == null) {
@@ -48,6 +36,7 @@ namespace log4netParser {
                     _current.Message.Message += Environment.NewLine + line;
                 }
             }
+
             //2013-04-09 00:57:29,648 ERROR [57] EPiServer.Global.Global_Error - 1.2.5 Unhandled exception in ASP.NET
             //System.Web.HttpException (0x80004005): A potentially dangerous Request.Path value was detected from the client (?).
             //   at System.Web.HttpRequest.ValidateInputIfRequiredByConfig()
@@ -108,6 +97,7 @@ T
         }
 
         private LogPattern _lastUsedPattern;
+
         #region public LogEntry ParseEntry(string line)
         /// <summary>
         /// 

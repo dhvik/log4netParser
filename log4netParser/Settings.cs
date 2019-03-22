@@ -23,28 +23,26 @@ namespace log4netParser {
 		/// </summary>
 		public static Settings Instance {
 			get {
-				if (_instance == null) {
-					lock (InstanceLock) {
-						if (_instance == null) {
-                            var exe = new FileInfo(Assembly.GetEntryAssembly().Location);
+			    if (_instance != null) return _instance;
+			    lock (InstanceLock) {
+			        if (_instance != null) return _instance;
+			        var exe = new FileInfo(Assembly.GetEntryAssembly().Location);
 
-                            var file = new FileInfo(Path.Combine(exe.DirectoryName,"log4netParserSettings.xml"));
-							Settings tmp = null;
-							try {
-								if (file.Exists)
-									tmp = XmlSerializerUtil.DeserializeFromXmlFile<Settings>(file.FullName);
-							} catch (Exception e) {
-								Log.Error(string.Format("Deserialize xml file '{0}' failed. {1}", file.FullName, e.Message), e);
-							}
-							if (tmp == null)
-								tmp = new Settings();
-							tmp._filename = file.FullName;
+			        var file = new FileInfo(Path.Combine(exe.DirectoryName,"log4netParserSettings.xml"));
+			        Settings tmp = null;
+			        try {
+			            if (file.Exists)
+			                tmp = XmlSerializerUtil.DeserializeFromXmlFile<Settings>(file.FullName);
+			        } catch (Exception e) {
+			            Log.Error($"Deserialize xml file '{file.FullName}' failed. {e.Message}", e);
+			        }
+			        if (tmp == null)
+			            tmp = new Settings();
+			        tmp._filename = file.FullName;
 
-							_instance = tmp;
-						}
-					}
-				}
-				return _instance;
+			        _instance = tmp;
+			    }
+			    return _instance;
 			}
 		}
 		private static volatile Settings _instance;
@@ -58,7 +56,10 @@ namespace log4netParser {
 		/// </summary>
 		/// <value></value>
 		public string LastLoadedFile { get; set; }
-		#endregion
+
+	    public bool Live { get; set; }
+
+	    #endregion
 		/* *******************************************************************
          *  Methods 
          * *******************************************************************/

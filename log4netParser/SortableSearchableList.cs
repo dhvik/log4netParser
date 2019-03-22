@@ -5,14 +5,16 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace log4netParser {
+namespace log4netParser
+{
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <remarks>Based on an example from http://msdn.microsoft.com/en-us/library/aa480736.aspx</remarks>
     /// <example></example>
-    public class SortableSearchableList<T> : BindingList<T> {
+    public class SortableSearchableList<T> : BindingList<T>
+    {
         /* *******************************************************************
          *  Properties
          * *******************************************************************/
@@ -61,6 +63,12 @@ namespace log4netParser {
         #endregion
         private ArrayList _unsortedItems;
         private List<T> _hiddenItems;
+        private readonly ISynchronizeInvoke _invoke;
+
+        public SortableSearchableList(ISynchronizeInvoke invoke)
+        {
+            _invoke = invoke;
+        }
         /* *******************************************************************
          *  Methods
          * *******************************************************************/
@@ -71,18 +79,19 @@ namespace log4netParser {
         /// <param name="prop"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        protected override int FindCore(PropertyDescriptor prop, object key) {
+        protected override int FindCore(PropertyDescriptor prop, object key)
+        {
             // Get the property info for the specified property.
-            PropertyInfo propInfo = typeof(T).GetProperty(prop.Name);
+            var propInfo = typeof(T).GetProperty(prop.Name);
 
-            if (key != null) {
-                // Loop through the items to see if the key
-                // value matches the property value.
-                for (int i = 0; i < Count; ++i) {
-                    var item = Items[i];
-                    if (propInfo.GetValue(item, null).Equals(key))
-                        return i;
-                }
+            if (propInfo == null || key == null) return -1;
+            // Loop through the items to see if the key
+            // value matches the property value.
+            for (var i = 0; i < Count; ++i)
+            {
+                var item = Items[i];
+                if (propInfo.GetValue(item, null).Equals(key))
+                    return i;
             }
             return -1;
         }
@@ -94,7 +103,8 @@ namespace log4netParser {
         /// <param name="property"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public int Find(string property, object key) {
+        public int Find(string property, object key)
+        {
             // Check the properties for a property with the specified name.
             var properties = TypeDescriptor.GetProperties(typeof(T));
             var prop = properties.Find(property, true);
@@ -106,19 +116,6 @@ namespace log4netParser {
             return FindCore(prop, key);
         }
         #endregion
-        #region public SortableSearchableList(IEnumerable<T> logEntires)
-        /// <summary>
-        /// Initializes a new instance of the <b>SortableSearchableList&lt;T&gt;</b> class.
-        /// </summary>
-        /// <param name="logEntires"></param>
-        public SortableSearchableList(IEnumerable<T> logEntires) {
-            if (logEntires != null) {
-                foreach (var logEntry in logEntires) {
-                    Add(logEntry);
-                }
-            }
-        }
-        #endregion
         #region protected override void ApplySortCore(PropertyDescriptor prop, ListSortDirection direction)
         /// <summary>
         /// 
@@ -126,14 +123,16 @@ namespace log4netParser {
         /// <param name="prop"></param>
         /// <param name="direction"></param>
         /// <exception cref="NotSupportedException">If cannot sort by .</exception>
-        protected override void ApplySortCore(PropertyDescriptor prop, ListSortDirection direction) {
+        protected override void ApplySortCore(PropertyDescriptor prop, ListSortDirection direction)
+        {
             var sortedList = new List<SortIndex<T>>();
 
             // Check to see if the property type we are sorting by implements
             // the IComparable interface.
-            Type interfaceType = prop.PropertyType.GetInterface("IComparable");
-
-            if (interfaceType != null) {
+            var interfaceType = prop.PropertyType.GetInterface("IComparable");
+            if (interfaceType != null)
+            {
+                RaiseListChangedEvents = false;
                 // If so, set the SortPropertyValue and SortDirectionValue.
                 _sortPropertyValue = prop;
                 _sortDirectionValue = direction;
@@ -141,7 +140,8 @@ namespace log4netParser {
                 _unsortedItems = new ArrayList(Count);
 
                 // Loop through each item, adding it the the sortedItems ArrayList.
-                foreach (var item in Items) {
+                foreach (var item in Items)
+                {
                     sortedList.Add(new SortIndex<T>((IComparable)prop.GetValue(item), item));
                     _unsortedItems.Add(item);
                 }
@@ -153,20 +153,32 @@ namespace log4netParser {
                 if (direction == ListSortDirection.Descending)
                     sortedList.Reverse();
 
-                for (var i = 0; i < Count; i++) {
-                    var position = IndexOf(sortedList[i].Item);
-                    if (position == i) continue;
-                    var temp = this[i];
-                    this[i] = this[position];
-                    this[position] = temp;
+                for (var i = 0; i < sortedList.Count; i++)
+                {
+                    try
+                    {
+                        var position = IndexOf(sortedList[i].Item);
+                        if (position == i) continue;
+                        var temp = this[i];
+                        this[i] = this[position];
+                        this[position] = temp;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
                 }
 
                 _isSortedValue = true;
 
                 // Raise the ListChanged event so bound controls refresh their
                 // values.
+                RaiseListChangedEvents = true;
+
                 OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
-            } else
+            }
+            else
                 // If the property type does not implement IComparable, let the user
                 // know.
                 throw new NotSupportedException("Cannot sort by " + prop.Name +
@@ -178,21 +190,24 @@ namespace log4netParser {
         /// <summary>
         /// 
         /// </summary>
-        protected override void RemoveSortCore() {
+        protected override void RemoveSortCore()
+        {
             // Ensure the list has been sorted.
-            if (_unsortedItems != null) {
+            if (_unsortedItems != null)
+            {
                 // Loop through the unsorted items and reorder the
                 // list per the unsorted list.
-                for (int i = 0; i < _unsortedItems.Count; ) {
-                    int position = Find("LastName",
-                        _unsortedItems[i].GetType().
-                            GetProperty("LastName").GetValue(_unsortedItems[i], null));
-                    if (position > 0 && position != i) {
+                for (var i = 0; i < _unsortedItems.Count;)
+                {
+                    var position = Find("LastName",_unsortedItems[i].GetType().GetProperty("LastName").GetValue(_unsortedItems[i], null));
+                    if (position > 0 && position != i)
+                    {
                         object temp = this[i];
                         this[i] = this[position];
                         this[position] = (T)temp;
                         i++;
-                    } else if (position == i)
+                    }
+                    else if (position == i)
                         i++;
                     else
                         // If an item in the unsorted list no longer exists,
@@ -208,16 +223,24 @@ namespace log4netParser {
         /// <summary>
         /// 
         /// </summary>
-        public void RemoveSort() {
+        public void RemoveSort()
+        {
             RemoveSortCore();
         }
         #endregion
+
+        public void Sort()
+        {
+            if (SortPropertyCore == null) return;
+            ApplySortCore(SortPropertyCore, SortDirectionCore);
+        }
         #region public override void EndNew(int itemIndex)
         /// <summary>
         /// 
         /// </summary>
         /// <param name="itemIndex"></param>
-        public override void EndNew(int itemIndex) {
+        public override void EndNew(int itemIndex)
+        {
             // Check to see if the item is added to the end of the list,
             // and if so, re-sort the list.
             if (_sortPropertyValue != null && itemIndex == Count - 1)
@@ -227,33 +250,43 @@ namespace log4netParser {
         }
         #endregion
 
-        public int Hide(Func<T, bool> predicate) {
+        public int Hide(Func<T, bool> predicate)
+        {
             if (_hiddenItems == null) _hiddenItems = new List<T>();
             RaiseListChangedEvents = false;
             var removedItems = 0;
-            for (var i = Count - 1; i >= 0; i--) {
-                try {
-                    if (predicate(this[i])) {
+            for (var i = Count - 1; i >= 0; i--)
+            {
+                try
+                {
+                    if (predicate(this[i]))
+                    {
                         _hiddenItems.Add(this[i]);
                         RemoveAt(i);
                         removedItems++;
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     Debug.WriteLine("Error in predicate function " + e.Message);
                 }
             }
             RaiseListChangedEvents = true;
-            if (removedItems > 0) {
+            if (removedItems > 0)
+            {
                 OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
             }
-            return removedItems;    
+            return removedItems;
         }
 
-        public void ShowHiddenItems() {
-            if (_hiddenItems == null || _hiddenItems.Count == 0) {
+        public void ShowHiddenItems()
+        {
+            if (_hiddenItems == null || _hiddenItems.Count == 0)
+            {
                 return;
             }
-            foreach (var hiddenItem in _hiddenItems) {
+            foreach (var hiddenItem in _hiddenItems)
+            {
                 Add(hiddenItem);
             }
             _hiddenItems = null;
@@ -268,7 +301,8 @@ namespace log4netParser {
         /// <typeparam name="TItem"></typeparam>
         /// <remarks></remarks>
         /// <example></example>
-        public class SortIndex<TItem> : IComparable {
+        public class SortIndex<TItem> : IComparable
+        {
             /* *******************************************************************
              *  Properties
              * *******************************************************************/
@@ -295,7 +329,8 @@ namespace log4netParser {
             /// </summary>
             /// <param name="key"></param>
             /// <param name="item"></param>
-            public SortIndex(IComparable key, TItem item) {
+            public SortIndex(IComparable key, TItem item)
+            {
                 Key = key;
                 Item = item;
             }
@@ -319,7 +354,8 @@ namespace log4netParser {
             /// 	</table>
             /// </returns>
             /// <exception cref="NotImplementedException"></exception>
-            public int CompareTo(object obj) {
+            public int CompareTo(object obj)
+            {
                 var si = obj as SortIndex<TItem>;
                 if (si == null) return 1;
                 if (Key == null && si.Key == null) return 0;
@@ -328,7 +364,17 @@ namespace log4netParser {
             }
             #endregion
         }
-
+        delegate void ListChangedDelegate(ListChangedEventArgs e);
+        protected override void OnListChanged(ListChangedEventArgs e)
+        {
+            if (_invoke?.InvokeRequired == true)
+            {
+                _invoke.BeginInvoke(new ListChangedDelegate(base.OnListChanged), new object[] { e });
+            }
+            else
+            {
+                base.OnListChanged(e);
+            }
+        }
     }
-
 }

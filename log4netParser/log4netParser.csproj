@@ -74,6 +74,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="LogData.cs" />
+    <Compile Include="LogDataSource.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="Controls\LogEntryView.cs">
       <SubType>UserControl</SubType>
