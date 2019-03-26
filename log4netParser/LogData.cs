@@ -24,7 +24,7 @@ namespace log4netParser {
         public void Clear()
         {
             _loggers.Clear();
-            LogEntryDataSource.Clear();
+            LoggerDataSource.Clear();
             LogEntryDataSource.Clear();
         }
 

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Reflection;
 
 namespace log4netParser
 {
@@ -181,9 +180,7 @@ namespace log4netParser
             else
                 // If the property type does not implement IComparable, let the user
                 // know.
-                throw new NotSupportedException("Cannot sort by " + prop.Name +
-                                                ". This" + prop.PropertyType +
-                                                " does not implement IComparable");
+                throw new NotSupportedException($"Cannot sort by {prop.Name}. This{prop.PropertyType} does not implement IComparable");
         }
         #endregion
         #region protected override void RemoveSortCore()
