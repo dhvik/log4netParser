@@ -171,6 +171,9 @@ namespace log4netParser.Controls {
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             liveToolstripButton.Checked = !liveToolstripButton.Checked;
+            //liveToolstripButton.Text = liveToolstripButton.Checked ? "Pause Updates" : "Continue";
+
+                
             if (IsMainLog)
             {
                 Settings.Instance.Live = liveToolstripButton.Checked;

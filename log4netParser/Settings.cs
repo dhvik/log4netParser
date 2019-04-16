@@ -50,16 +50,36 @@ namespace log4netParser {
 		#endregion
 
 		private string _filename;
-		#region public string LastLoadedFile
+
+        #region public string LastLoadedFile
 		/// <summary>
 		/// Get/Sets the LastLoadedFile of the Settings
 		/// </summary>
 		/// <value></value>
 		public string LastLoadedFile { get; set; }
 
-	    public bool Live { get; set; }
+        public bool Live
+        {
+            get { return _live; }
+            set
+            {
+                if (value != _live)
+                {
+                    _live = value;
+                    OnLiveChanged(this,EventArgs.Empty);
+                }
+            }
+        }
+        private bool _live;
 
-	    #endregion
+        public event EventHandler<EventArgs> LiveChanged;
+
+        protected void OnLiveChanged(object sender, EventArgs args)
+        {
+            LiveChanged?.Invoke(sender, args);
+        }
+
+        #endregion
 		/* *******************************************************************
          *  Methods 
          * *******************************************************************/

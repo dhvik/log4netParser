@@ -19,10 +19,24 @@ namespace log4netParser
         public LogDataSource(ISynchronizeInvoke invoke)
         {
             LogData = new LogData(invoke);
+            Settings.Instance.LiveChanged += (sender, args) =>
+            {
+                if (!Settings.Instance.Live)
+                {
+                    StopMonitoringFile();
+                }
+                else
+                {
+                    if (_worker == null)
+                    {
+                        StartMonitoringFile();
+                    }
+                }
+            };
         }
         public void SetData(string text)
         {
-            StopWorker();
+            StopMonitoringFile();
             LogData.Clear();
             var parser = new Parser(LogData);
             using (var stream = new MemoryStream())
@@ -46,7 +60,7 @@ namespace log4netParser
 
         public void MonitorFile(string path)
         {
-            StopWorker();
+            StopMonitoringFile();
 
             Settings.Instance.LastLoadedFile = path;
             Settings.Instance.Save();
@@ -54,6 +68,11 @@ namespace log4netParser
             _position = 0;
             _length = 0;
             _path = path;
+            StartMonitoringFile();
+        }
+
+        private void StartMonitoringFile()
+        {
             _worker = new BackgroundWorker
             {
                 WorkerSupportsCancellation = true
@@ -62,7 +81,7 @@ namespace log4netParser
             _worker.RunWorkerAsync();
         }
 
-        private void StopWorker()
+        private void StopMonitoringFile()
         {
             if (_worker != null)
             {
@@ -106,6 +125,7 @@ namespace log4netParser
                         LogData.ResumeUpdates();
                         _length = file.Length;
                         _position = file.Position;
+                        if (!Settings.Instance.Live) return;
                         Thread.Sleep(TimeSpan.FromSeconds(0.5));
                     }
                 }
